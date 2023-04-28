@@ -9,6 +9,7 @@ SSH_PORT=$(jq --raw-output ".ssh_port" $CONFIG_PATH)
 USERNAME=$(jq --raw-output ".username" $CONFIG_PATH)
 
 REMOTE_FORWARDING=$(jq --raw-output ".remote_forwarding[]" $CONFIG_PATH)
+LOCAL_FORWARDING=$(jq --raw-output ".local_forwarding[]" $CONFIG_PATH)
 
 OTHER_SSH_OPTIONS=$(jq --raw-output ".other_ssh_options" $CONFIG_PATH)
 FORCE_GENERATION=$(jq --raw-output ".force_keygen" $CONFIG_PATH)
@@ -84,6 +85,12 @@ if [ ! -z "${REMOTE_FORWARDING}" ]; then
   while read -r LINE; do
     COMMAND="${COMMAND} -R ${LINE}"
   done <<< "${REMOTE_FORWARDING}"
+fi
+
+if [ ! -z "${LOCAL_FORWARDING}" ]; then
+  while read -r LINE; do
+    COMMAND="${COMMAND} -L ${LINE}"
+  done <<< "${LOCAL_FORWARDING}"
 fi
 
 COMMAND="${COMMAND} ${OTHER_SSH_OPTIONS}"
