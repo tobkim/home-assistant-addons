@@ -23,6 +23,8 @@ options:
   username: autossh
   remote_forwarding:
     - '127.0.0.1:8123:172.30.32.1:8123'
+  local_forwarding:
+    - '15432:localhost:5432'
   other_ssh_options: '-v -N'
   force_keygen: false
 schema:
